@@ -167,7 +167,7 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #FFD700;
+            background: rgba(255, 215, 0, 0.5); /* Semi-transparent gold */
             color: #333;
             border: none;
             padding: 10px 20px;
@@ -178,19 +178,19 @@
             z-index: 1000;
         }
         .toggle-btn:hover {
-            background: #FFA500;
+            background: rgba(255, 165, 0, 0.5); /* Semi-transparent orange on hover */
         }
         .dark-mode .toggle-btn {
-            background: #333;
+            background: rgba(51, 51, 51, 0.5); /* Semi-transparent dark gray */
             color: #FFD700;
         }
         .dark-mode .toggle-btn:hover {
-            background: #555;
+            background: rgba(85, 85, 85, 0.5); /* Semi-transparent lighter gray on hover */
         }
     </style>
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleMode()">☀️</button>
+    <button class="toggle-btn" onclick="toggleMode()">Toggle Dark/Light Mode 🌙☀️</button>
 
     <header>
         <h1>Agricultural Precision Lab 🌱🚜🌾</h1>
