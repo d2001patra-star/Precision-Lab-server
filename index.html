@@ -103,8 +103,7 @@
             color: #D3D3D3;
         }
         #about p {
-            color: #000000; /* Black for About section text */
-        }
+            color: #000000西亚 SI#
         #about.dark-mode p {
             color: #f0f0f0;
         }
@@ -137,12 +136,33 @@
             color: #f0f0f0;
         }
         
+        /* Marquee Effect for Testing Phase Text */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 10px;
+        }
+        .marquee-text {
+            display: inline-block;
+            font-size: 0.8rem;
+            color: #FFD700;
+            animation: marquee 10s linear infinite;
+        }
+        .dark-mode .marquee-text {
+            color: #90EE90;
+        }
+        
         /* Animations */
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-100%) rotate(-10deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
         @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
         .achievement-card:nth-child(odd) { animation: slideIn 0.8s ease-out; }
         .achievement-card:nth-child(even) { animation: slideIn 0.8s 0.2s ease-out both; }
         .gallery img { animation: bounceIn 1s ease-out; }
@@ -176,12 +196,14 @@
     </style>
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleMode()">Mode 🌙☀️</button>
+    <button class="toggle-btn" onclick="toggleMode()">Toggle Dark/Light Mode 🌙☀️</button>
 
     <header>
         <h1>Agricultural Precision Lab 🌱🚜🌾</h1>
         <p>Revolutionizing Farming Through Innovation & Precision 🌟</p>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Unofficial site, In Testing Phase ⚠️</p>
+        <div class="marquee-container">
+            <p class="marquee-text">Unofficial site, In Testing Phase ⚠️</p>
+        </div>
     </header>
 
     <section class="section" id="about">
@@ -275,4 +297,3 @@
     </script>
 </body>
 </html>
-
