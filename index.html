@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agricultural Precision Lab Achievements</title>
+    <title>Agricultural Precision Lab Achievements 🌿</title>
     <style>
         /* Global Styles */
         body {
@@ -13,6 +13,11 @@
             background: linear-gradient(135deg, #4CAF50, #2E7D32);
             color: #333;
             overflow-x: hidden;
+            transition: background 0.5s, color 0.5s;
+        }
+        body.dark-mode {
+            background: linear-gradient(135deg, #1E1E1E, #333333);
+            color: #f0f0f0;
         }
         header {
             background: rgba(0,0,0,0.7);
@@ -20,6 +25,11 @@
             text-align: center;
             padding: 2rem;
             position: relative;
+            transition: background 0.5s, color 0.5s;
+        }
+        header.dark-mode {
+            background: rgba(255,255,255,0.1);
+            color: #FFD700;
         }
         header::before {
             content: '';
@@ -52,9 +62,13 @@
             border-radius: 15px;
             padding: 1.5rem;
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
+        }
+        .achievement-card.dark-mode {
+            background: #2E2E2E;
+            box-shadow: 0 8px 16px rgba(255,255,255,0.1);
         }
         .achievement-card::before {
             content: '🌿';
@@ -65,7 +79,8 @@
             opacity: 0.1;
         }
         .achievement-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
         }
         .achievement-card img {
             width: 100%;
@@ -78,11 +93,20 @@
         .achievement-card h3 {
             color: #228B22; /* Forest green for achievement titles */
         }
+        .achievement-card.dark-mode h3 {
+            color: #90EE90; /* Light green for dark mode */
+        }
         .achievement-card p {
             color: #006400; /* Dark green for achievement descriptions */
         }
+        .achievement-card.dark-mode p {
+            color: #D3D3D3;
+        }
         #about p {
             color: #000000; /* Black for About section text */
+        }
+        #about.dark-mode p {
+            color: #f0f0f0;
         }
         .gallery {
             display: flex;
@@ -99,67 +123,105 @@
             flex-shrink: 0;
         }
         .gallery img:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
         }
         footer {
             background: #2E7D32;
             color: white;
             text-align: center;
             padding: 1rem;
+            transition: background 0.5s, color 0.5s;
+        }
+        footer.dark-mode {
+            background: #1E1E1E;
+            color: #f0f0f0;
         }
         
         /* Animations */
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-100%) rotate(-10deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         .achievement-card:nth-child(odd) { animation: slideIn 0.8s ease-out; }
         .achievement-card:nth-child(even) { animation: slideIn 0.8s 0.2s ease-out both; }
+        .gallery img { animation: bounceIn 1s ease-out; }
+        header h1:hover { animation: pulse 1s infinite; }
+
+        /* Toggle Button Styles */
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #FFD700;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, color 0.3s;
+            z-index: 1000;
+        }
+        .toggle-btn:hover {
+            background: #FFA500;
+        }
+        .dark-mode .toggle-btn {
+            background: #333;
+            color: #FFD700;
+        }
+        .dark-mode .toggle-btn:hover {
+            background: #555;
+        }
     </style>
 </head>
 <body>
+    <button class="toggle-btn" onclick="toggleMode()">Toggle Dark/Light Mode 🌙☀️</button>
+
     <header>
-        <h1>Agricultural Precision Lab</h1>
-        <p>Revolutionizing Farming Through Innovation & Precision</p>
+        <h1>Agricultural Precision Lab 🌱🚜🌾</h1>
+        <p>Revolutionizing Farming Through Innovation & Precision 🌟</p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">Unofficial site, In Testing Phase ⚠️</p>
     </header>
 
     <section class="section" id="about">
-        <h2 style="text-align: center; color: #000000;">About Our Lab</h2>
-        <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Our Precision Agriculture Lab pioneers technologies that optimize crop yields, reduce environmental impact, and enhance sustainability. From AI-driven sensors to automated irrigation, we're at the forefront of smart farming.</p>
+        <h2 style="text-align: center; color: #000000;">About Our Lab 📚</h2>
+        <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Our Precision Agriculture Lab pioneers technologies that optimize crop yields, reduce environmental impact, and enhance sustainability. From AI-driven sensors to automated irrigation, we're at the forefront of smart farming. 🤖💧🌍</p>
     </section>
 
     <section class="section" id="achievements">
-        <h2 style="text-align: center; color: #000000;">Key Achievements</h2>
+        <h2 style="text-align: center; color: #000000;">Key Achievements 🏆</h2>
         <div class="achievements">
             <div class="achievement-card">
                 <img src="Variable rate github.jpeg" alt="Variable Rate Irrigation">
-                <h3>Variable Rate Irrigation System</h3>
-                <p>Implemented AI-optimized watering that saved 30% on water usage across 500+ acres, boosting yields by 15% in drought-prone areas.</p>
+                <h3>Variable Rate Irrigation System 💦</h3>
+                <p>Implemented AI-optimized watering that saved 30% on water usage across 500+ acres, boosting yields by 15% in drought-prone areas. 🌵📈</p>
             </div>
             <div class="achievement-card">
                 <img src="Drone.jpg">
-                <h3>Crop Sensing & Targeted Spraying</h3>
-                <p>Developed drone-based sensors for precise pesticide application, reducing chemical use by 40% while maintaining crop health.</p>
+                <h3>Crop Sensing & Targeted Spraying 🛩️</h3>
+                <p>Developed drone-based sensors for precise pesticide application, reducing chemical use by 40% while maintaining crop health. 🌿🛡️</p>
             </div>
             <div class="achievement-card">
                 <img src="Crop-Yield-Prediction-7-Shocking-Ways-to-Boost-Output_1.jpg" alt="Yield Mapping">
-                <h3>Yield Mapping & Forecasting</h3>
-                <p>Created predictive models using satellite data, enabling farmers to forecast harvests with 95% accuracy and optimize planting strategies.</p>
+                <h3>Yield Mapping & Forecasting 📊</h3>
+                <p>Created predictive models using satellite data, enabling farmers to forecast harvests with 95% accuracy and optimize planting strategies. 🛰️🌾</p>
             </div>
             <div class="achievement-card">
                 <img src="soil-monitoring-with-iot-1000x667.jpg" alt="Soil Health Monitoring">
-                <h3>Soil Health Monitoring Network</h3>
-                <p>Deployed IoT sensors across labs and fields, improving soil fertility management and cutting fertilizer needs by 25%.</p>
+                <h3>Soil Health Monitoring Network 🌱</h3>
+                <p>Deployed IoT sensors across labs and fields, improving soil fertility management and cutting fertilizer needs by 25%. 📡🧪</p>
             </div>
             <div class="achievement-card">
                 <img src="Automated harvester.jpeg" alt="Automated Harvesting">
-                <h3>Automated Harvesting System</h3>
-                <p>Developed robotic harvesters that increased efficiency by 20% and reduced labor costs in 2025 trials.</p>
+                <h3>Automated Harvesting System 🤖</h3>
+                <p>Developed robotic harvesters that increased efficiency by 20% and reduced labor costs in 2025 trials. 🚜💰</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="gallery">
-        <h2 style="text-align: center; color: #000000;">Image Gallery</h2>
+        <h2 style="text-align: center; color: #000000;">Image Gallery 📸</h2>
         <div class="gallery">
             <img src="IMG-20250124-WA0035.jpg" alt="Lab Equipment 1">
             <img src="IMG-20250124-WA0036.jpg" alt="Lab Equipment 2">
@@ -180,7 +242,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 Agricultural Precision Lab. Ready for updates—contact us to collaborate!</p>
+        <p>&copy; 2025 Agricultural Precision Lab. Ready for updates—contact us at <a href="mailto:ciae1976@gmail.com" style="color: inherit;">ciae1976@gmail.com</a> to collaborate or send photos of recent programs for updating the webpage! 📧📸</p>
     </footer>
 
     <script>
@@ -201,6 +263,15 @@
             });
         });
         document.querySelectorAll('.achievement-card, .gallery img').forEach(el => observer.observe(el));
+
+        // Dark/Light Mode Toggle
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.achievement-card').forEach(card => card.classList.toggle('dark-mode'));
+            document.querySelector('#about').classList.toggle('dark-mode');
+            document.querySelector('header').classList.toggle('dark-mode');
+            document.querySelector('footer').classList.toggle('dark-mode');
+        }
     </script>
 </body>
 </html>
