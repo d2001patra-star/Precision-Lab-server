@@ -121,6 +121,13 @@
         #about.dark-mode p {
             color: #f0f0f0;
         }
+        .section h2 {
+            text-align: center;
+            color: #000000;
+        }
+        .section.dark-mode h2 {
+            color: #ffffff; /* White for section headings in dark mode */
+        }
         .gallery {
             display: flex;
             overflow-x: auto;
@@ -221,12 +228,12 @@
     </header>
 
     <section class="section" id="about">
-        <h2 style="text-align: center; color: #000000;">About Our Lab 📚</h2>
+        <h2 style="text-align: center;">About Our Lab 📚</h2>
         <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto;">Our Precision Agriculture Lab pioneers technologies that optimize crop yields, reduce environmental impact, and enhance sustainability. From AI-driven sensors to automated irrigation, we're at the forefront of smart farming. 🤖💧🌍</p>
     </section>
 
     <section class="section" id="achievements">
-        <h2 style="text-align: center; color: #000000;">Key Achievements 🏆</h2>
+        <h2 style="text-align: center;">Key Achievements 🏆</h2>
         <div class="achievements">
             <div class="achievement-card">
                 <img src="Variable rate github.jpeg" alt="Variable Rate Irrigation">
@@ -257,7 +264,7 @@
     </section>
 
     <section class="section" id="gallery">
-        <h2 style="text-align: center; color: #000000;">Image Gallery 📸</h2>
+        <h2 style="text-align: center;">Image Gallery 📸</h2>
         <div class="gallery">
             <img src="IMG-20250124-WA0035.jpg" alt="Lab Equipment 1">
             <img src="IMG-20250124-WA0036.jpg" alt="Lab Equipment 2">
@@ -308,7 +315,7 @@
         function toggleMode() {
             document.body.classList.toggle('dark-mode');
             document.querySelectorAll('.achievement-card').forEach(card => card.classList.toggle('dark-mode'));
-            document.querySelector('#about').classList.toggle('dark-mode');
+            document.querySelectorAll('.section').forEach(section => section.classList.toggle('dark-mode'));
             document.querySelector('header').classList.toggle('dark-mode');
             document.querySelector('footer').classList.toggle('dark-mode');
         }
@@ -346,4 +353,3 @@
     </script>
 </body>
 </html>
-
