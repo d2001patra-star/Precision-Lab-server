@@ -125,6 +125,19 @@
         .gallery img:hover {
             transform: scale(1.1) rotate(5deg);
         }
+        .qr-code {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .qr-code img:hover {
+            transform: scale(1.1);
+        }
         footer {
             background: #2E7D32;
             color: white;
@@ -147,6 +160,7 @@
         .achievement-card:nth-child(even) { animation: slideIn 0.8s 0.2s ease-out both; }
         .gallery img { animation: bounceIn 1s ease-out; }
         header h1:hover { animation: pulse 1s infinite; }
+        .qr-code img { animation: bounceIn 1s ease-out; }
 
         /* Toggle Button Styles */
         .toggle-btn {
@@ -176,7 +190,7 @@
     </style>
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleMode()">🌙</button>
+    <button class="toggle-btn" onclick="toggleMode()">☀️</button>
 
     <header>
         <h1>Agricultural Precision Lab 🌱🚜🌾</h1>
@@ -239,10 +253,14 @@
             <img src="IMG-20250124-WA0056.jpg" alt="Satellite Mapping">
             <img src="IMG-20250124-WA0057.jpg" alt="Precision Farming Demo">
         </div>
+        <div class="qr-code">
+            <img src="Insta.jpg" alt="Instagram QR Code">
+            <p>Scan to follow us on Instagram! 📱</p>
+        </div>
     </section>
 
     <footer>
-        <p>&copy; Ready for updates—contact us at <a href="mailto:ciaebhopal1976@gmail.com" style="color: inherit;">ciaebhopal1976@gmail.com</a> 📧 to collaborate or send photos📸 of recent Achievements for updating the page! </p>
+        <p>&copy; 2025 Agricultural Precision Lab. Ready for updates—contact us at <a href="mailto:ciae1976@gmail.com" style="color: inherit;">ciae1976@gmail.com</a> to collaborate or send photos of recent programs for updating the webpage! 📧📸</p>
     </footer>
 
     <script>
@@ -262,7 +280,7 @@
                 }
             });
         });
-        document.querySelectorAll('.achievement-card, .gallery img').forEach(el => observer.observe(el));
+        document.querySelectorAll('.achievement-card, .gallery img, .qr-code img').forEach(el => observer.observe(el));
 
         // Dark/Light Mode Toggle
         function toggleMode() {
@@ -275,8 +293,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
