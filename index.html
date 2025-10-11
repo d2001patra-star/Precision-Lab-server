@@ -251,7 +251,10 @@
             display: inline-block;
             min-width: 50px; /* Prevents jitter during animation */
             text-align: right;
-            animation: countUp 2s ease-out forwards;
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+        }
+        #visitorCount.animate {
+            animation: countUp 0.2s ease-out;
         }
         @keyframes counterPulse {
             0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
@@ -259,7 +262,7 @@
             100% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
         }
         @keyframes countUp {
-            0% { transform: translateY(10px); opacity: 0; }
+            0% { transform: translateY(5px); opacity: 0.5; }
             100% { transform: translateY(0); opacity: 1; }
         }
 
@@ -622,26 +625,44 @@
         localStorage.setItem('visitorCount', visitorCount);
         const visitorCounter = document.getElementById('visitorCount');
 
-        // Animate counter to target value
+        // Smooth counter animation with ease-out quadratic
         function animateCounter() {
-            let current = parseInt(visitorCounter.textContent);
-            let target = visitorCount;
-            const increment = Math.max(1, Math.ceil((target - current) / 20)); // Smoother increment
-            if (current < target) {
-                current += increment;
+            const start = 0;
+            const target = visitorCount;
+            const duration = 2000; // 2 seconds
+            let startTime = null;
+
+            function easeOutQuad(t) {
+                return 1 - (1 - t) * (1 - t); // Quadratic ease-out function
+            }
+
+            function updateCounter(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1); // Normalize to 0-1
+                const easedProgress = easeOutQuad(progress);
+                const current = Math.floor(start + (target - start) * easedProgress);
                 visitorCounter.textContent = current;
-                requestAnimationFrame(animateCounter); // Use requestAnimationFrame for smoother animation
+
+                // Add animation class for CSS transition
+                visitorCounter.classList.add('animate');
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    visitorCounter.textContent = target; // Ensure exact final value
+                    visitorCounter.classList.remove('animate'); // Remove animation class
+                }
+            }
+
+            if (!motionMatchMedia.matches) {
+                requestAnimationFrame(updateCounter);
             } else {
-                visitorCounter.textContent = target; // Ensure final value is exact
+                visitorCounter.textContent = target; // Set final value without animation
             }
         }
 
         // Trigger animation on page load
-        if (!motionMatchMedia.matches) {
-            animateCounter();
-        } else {
-            visitorCounter.textContent = visitorCount; // Set final value without animation for reduced motion
-        }
+        animateCounter();
     </script>
 </body>
 </html>
