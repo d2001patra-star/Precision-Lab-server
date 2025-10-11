@@ -237,14 +237,30 @@
             font-size: 0.8rem;
             color: #ffffff;
             background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 8px 15px;
+            border-radius: 8px;
             z-index: 1000;
             transition: color 0.3s, background 0.3s;
+            animation: counterPulse 2s ease-in-out infinite;
         }
         .dark-mode .visitor-counter {
             color: #FFD700;
             background: rgba(255, 255, 255, 0.1);
+        }
+        #visitorCount {
+            display: inline-block;
+            min-width: 50px; /* Prevents jitter during animation */
+            text-align: right;
+            animation: countUp 2s ease-out forwards;
+        }
+        @keyframes counterPulse {
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+        }
+        @keyframes countUp {
+            0% { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
         /* Advanced Animations */
@@ -413,7 +429,7 @@
         }
 
         @media (prefers-reduced-motion) {
-            .achievement-card, .gallery img, .qr-code img {
+            .achievement-card, .gallery img, .qr-code img, .visitor-counter, #visitorCount {
                 transform: none !important;
                 animation: none !important;
             }
@@ -604,19 +620,28 @@
         let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
         visitorCount++;
         localStorage.setItem('visitorCount', visitorCount);
-        document.getElementById('visitorCount').textContent = visitorCount;
+        const visitorCounter = document.getElementById('visitorCount');
 
-        // Simulate running counter effect
+        // Animate counter to target value
         function animateCounter() {
-            let current = parseInt(document.getElementById('visitorCount').textContent);
+            let current = parseInt(visitorCounter.textContent);
             let target = visitorCount;
+            const increment = Math.max(1, Math.ceil((target - current) / 20)); // Smoother increment
             if (current < target) {
-                current += Math.ceil((target - current) / 10);
-                document.getElementById('visitorCount').textContent = current;
-                setTimeout(animateCounter, 100);
+                current += increment;
+                visitorCounter.textContent = current;
+                requestAnimationFrame(animateCounter); // Use requestAnimationFrame for smoother animation
+            } else {
+                visitorCounter.textContent = target; // Ensure final value is exact
             }
         }
-        animateCounter();
+
+        // Trigger animation on page load
+        if (!motionMatchMedia.matches) {
+            animateCounter();
+        } else {
+            visitorCounter.textContent = visitorCount; // Set final value without animation for reduced motion
+        }
     </script>
 </body>
 </html>
