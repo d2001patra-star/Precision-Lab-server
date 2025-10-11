@@ -44,7 +44,7 @@
         }
         header:hover::before {
             opacity: 0.5;
-            transform: scale(1.05);
+            transform: scale(1.05); /* Subtle zoom on header background */
         }
         h1 {
             font-size: 3rem;
@@ -232,19 +232,16 @@
         }
         .visitor-counter {
             position: fixed;
-            bottom: 15px; /* Moved closer to edge */
-            left: 15px; /* Moved closer to edge */
-            font-size: 0.65rem; /* Further reduced font size */
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
             color: #ffffff;
             background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px; /* Further reduced padding */
+            padding: 8px 15px;
             border-radius: 8px;
             z-index: 1000;
             transition: color 0.3s, background 0.3s;
             animation: counterPulse 2s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-            opacity: 0.8; /* Added opacity */
         }
         .dark-mode .visitor-counter {
             color: #FFD700;
@@ -252,41 +249,21 @@
         }
         #visitorCount {
             display: inline-block;
-            min-width: 40px;
+            min-width: 50px; /* Prevents jitter during animation */
             text-align: right;
-            position: relative;
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
         }
-        #visitorCount .digit {
-            display: inline-block;
-            width: 7px; /* Adjusted for smaller font */
-            text-align: center;
-            transition: transform 0.3s ease-out;
-        }
-        #visitorCount .digit.animate {
-            animation: flipDigit 0.3s ease-out;
-        }
-        .leaf-particle {
-            position: absolute;
-            font-size: 0.35rem; /* Further reduced particle size */
-            color: #228B22;
-            animation: leafFall 1s ease-out forwards;
-            pointer-events: none;
-        }
-        .dark-mode .leaf-particle {
-            color: #90EE90;
+        #visitorCount.animate {
+            animation: countUp 0.2s ease-out;
         }
         @keyframes counterPulse {
-            0% { transform: scale(1); box-shadow: 0 0 3px rgba(255, 215, 0, 0.5); }
-            50% { transform: scale(1.02); box-shadow: 0 0 10px rgba(255, 215, 0, 0.7); } /* Subtler scale and shadow */
-            100% { transform: scale(1); box-shadow: 0 0 3px rgba(255, 215, 0, 0.5); }
+            0% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
         }
-        @keyframes flipDigit {
-            0% { transform: translateY(10px) rotateX(90deg); opacity: 0; }
-            100% { transform: translateY(0) rotateX(0); opacity: 1; }
-        }
-        @keyframes leafFall {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.8; }
-            100% { transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px)) rotate(360deg); opacity: 0; }
+        @keyframes countUp {
+            0% { transform: translateY(5px); opacity: 0.5; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
         /* Advanced Animations */
@@ -455,7 +432,7 @@
         }
 
         @media (prefers-reduced-motion) {
-            .achievement-card, .gallery img, .qr-code img, .visitor-counter, #visitorCount, .leaf-particle {
+            .achievement-card, .gallery img, .qr-code img, .visitor-counter, #visitorCount {
                 transform: none !important;
                 animation: none !important;
             }
@@ -647,63 +624,40 @@
         visitorCount++;
         localStorage.setItem('visitorCount', visitorCount);
         const visitorCounter = document.getElementById('visitorCount');
-        const visitorCounterContainer = document.getElementById('visitorCounter');
-
-        // Split number into digits for individual animation
-        function updateCounterDisplay(value) {
-            const digits = value.toString().split('');
-            visitorCounter.innerHTML = digits.map(digit => `<span class="digit">${digit}</span>`).join('');
-        }
-
-        // Create leaf particle
-        function createLeafParticle() {
-            const leaf = document.createElement('span');
-            leaf.className = 'leaf-particle';
-            leaf.textContent = '🌿';
-            const x = (Math.random() - 0.5) * 25; // Adjusted range for smaller counter
-            const y = (Math.random() - 0.5) * 25;
-            leaf.style.setProperty('--x', x);
-            leaf.style.setProperty('--y', y);
-            visitorCounterContainer.appendChild(leaf);
-            setTimeout(() => leaf.remove(), 1000);
-        }
 
         // Smooth counter animation with ease-out quadratic
         function animateCounter() {
             const start = 0;
             const target = visitorCount;
-            const duration = 2000;
+            const duration = 2000; // 2 seconds
             let startTime = null;
 
             function easeOutQuad(t) {
-                return 1 - (1 - t) * (1 - t);
+                return 1 - (1 - t) * (1 - t); // Quadratic ease-out function
             }
 
             function updateCounter(timestamp) {
                 if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const progress = Math.min((timestamp - startTime) / duration, 1); // Normalize to 0-1
                 const easedProgress = easeOutQuad(progress);
                 const current = Math.floor(start + (target - start) * easedProgress);
+                visitorCounter.textContent = current;
 
-                updateCounterDisplay(current);
-                const digits = visitorCounter.querySelectorAll('.digit');
-                digits.forEach(digit => digit.classList.add('animate'));
-
-                if (Math.random() < 0.1) createLeafParticle();
+                // Add animation class for CSS transition
+                visitorCounter.classList.add('animate');
 
                 if (progress < 1) {
                     requestAnimationFrame(updateCounter);
                 } else {
-                    updateCounterDisplay(target);
-                    digits.forEach(digit => digit.classList.remove('animate'));
+                    visitorCounter.textContent = target; // Ensure exact final value
+                    visitorCounter.classList.remove('animate'); // Remove animation class
                 }
             }
 
             if (!motionMatchMedia.matches) {
-                updateCounterDisplay(0);
                 requestAnimationFrame(updateCounter);
             } else {
-                updateCounterDisplay(target);
+                visitorCounter.textContent = target; // Set final value without animation
             }
         }
 
@@ -712,4 +666,3 @@
     </script>
 </body>
 </html>
-
