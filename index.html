@@ -230,6 +230,22 @@
         footer a:hover {
             color: #FFD700;
         }
+        .visitor-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            transition: color 0.3s, background 0.3s;
+        }
+        .dark-mode .visitor-counter {
+            color: #FFD700;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
         /* Advanced Animations */
         @keyframes fadeInDown { 
@@ -416,6 +432,7 @@
 </head>
 <body>
     <button class="toggle-btn" onclick="toggleMode()"></button>
+    <div class="visitor-counter" id="visitorCounter">Visitors: <span id="visitorCount">0</span></div>
 
     <header>
         <h1>Precision Agriculture 🌱🚜🌾</h1>
@@ -582,6 +599,24 @@
             const modal = document.getElementById('myModal');
             modal.style.display = 'none';
         }
+
+        // Visitor Counter
+        let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
+        visitorCount++;
+        localStorage.setItem('visitorCount', visitorCount);
+        document.getElementById('visitorCount').textContent = visitorCount;
+
+        // Simulate running counter effect
+        function animateCounter() {
+            let current = parseInt(document.getElementById('visitorCount').textContent);
+            let target = visitorCount;
+            if (current < target) {
+                current += Math.ceil((target - current) / 10);
+                document.getElementById('visitorCount').textContent = current;
+                setTimeout(animateCounter, 100);
+            }
+        }
+        animateCounter();
     </script>
 </body>
 </html>
