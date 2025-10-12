@@ -560,7 +560,7 @@
             document.querySelectorAll('.achievement-card').forEach(card => card.classList.toggle('dark-mode'));
             document.querySelectorAll('.section').forEach(section => section.classList.toggle('dark-mode'));
             document.querySelector('header').classList.toggle('dark-mode');
-            document.querySelector('footer').forEach(footer => footer.classList.toggle('dark-mode'));
+            document.querySelector('footer').classList.toggle('dark-mode');
         }
 
         // 3D Hover Effect for Achievement Cards
@@ -620,51 +620,59 @@
         }
 
         // Visitor Counter
-        let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
-        visitorCount++;
-        localStorage.setItem('visitorCount', visitorCount);
-        const visitorCounter = document.getElementById('visitorCount');
+        function updateVisitorCount() {
+            const visitorCounter = document.getElementById('visitorCount');
+            let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
 
-        // Smooth counter animation with ease-out quadratic
-        function animateCounter() {
-            const start = 0;
-            const target = visitorCount;
-            const duration = 2000; // 2 seconds
-            let startTime = null;
-
-            function easeOutQuad(t) {
-                return 1 - (1 - t) * (1 - t); // Quadratic ease-out function
+            // Check if this is a new session
+            if (!sessionStorage.getItem('visited')) {
+                visitorCount++;
+                localStorage.setItem('visitorCount', visitorCount);
+                sessionStorage.setItem('visited', 'true');
             }
 
-            function updateCounter(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1); // Normalize to 0-1
-                const easedProgress = easeOutQuad(progress);
-                const current = Math.floor(start + (target - start) * easedProgress);
-                visitorCounter.textContent = current;
+            // Smooth counter animation with ease-out quadratic
+            function animateCounter() {
+                const start = 0;
+                const target = visitorCount;
+                const duration = 2000; // 2 seconds
+                let startTime = null;
 
-                // Add animation class for CSS transition
-                visitorCounter.classList.add('animate');
+                function easeOutQuad(t) {
+                    return 1 - (1 - t) * (1 - t); // Quadratic ease-out function
+                }
 
-                if (progress < 1) {
+                function updateCounter(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1); // Normalize to 0-1
+                    const easedProgress = easeOutQuad(progress);
+                    const current = Math.floor(start + (target - start) * easedProgress);
+                    visitorCounter.textContent = current;
+
+                    // Add animation class for CSS transition
+                    visitorCounter.classList.add('animate');
+
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        visitorCounter.textContent = target; // Ensure exact final value
+                        visitorCounter.classList.remove('animate'); // Remove animation class
+                    }
+                }
+
+                if (!motionMatchMedia.matches) {
                     requestAnimationFrame(updateCounter);
                 } else {
-                    visitorCounter.textContent = target; // Ensure exact final value
-                    visitorCounter.classList.remove('animate'); // Remove animation class
+                    visitorCounter.textContent = target; // Set final value without animation
                 }
             }
 
-            if (!motionMatchMedia.matches) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                visitorCounter.textContent = target; // Set final value without animation
-            }
+            // Trigger animation on page load
+            animateCounter();
         }
 
-        // Trigger animation on page load
-        animateCounter();
+        // Run visitor counter update on page load
+        window.onload = updateVisitorCount;
     </script>
 </body>
 </html>
-
-
